@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Portfolio</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        nav a:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.5s;
+        }
+
+        nav a:hover:before {
+            left: 100%;
+        }
+
+        nav a:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        /* Main Content */
+        .page {
+            min-height: 100vh;
+            padding: 2rem;
+            display: none;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        #home {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            padding-top: 100px;
+        }
+
+        /* Profile Image */
+        .profile-container {
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .profile-image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #45b7d1, #f9ca24);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+            font-weight: bold;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .profile-image:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4);
+        }
+
+        /* Name and Title */
+        .name-title {
+            margin-bottom: 2rem;
+        }
+
+        .name {
+            font-size: 3.5rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 0.5rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .title {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 300;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        /* Social Links */
+        .social-links {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 3rem;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .social-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 1rem 2rem;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 50px;
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .social-link:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+
+        .social-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        /* About Page */
+        #about {
+            padding-top: 100px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .about-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .about-title {
+            font-size: 3rem;
+            color: white;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .about-content {
+            color: white;
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Skills Section */
+        .skills-section {
+            margin-top: 3rem;
+        }
+
+        .skills-title {
+            font-size: 2rem;
+            color: white;
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .skill-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            border-radius: 15px;
+            text-align: center;
+            color: white;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .skill-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .name {
+                font-size: 2.5rem;
+            }
+            
+            .social-links {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .about-container {
+                padding: 2rem;
+                margin: 1rem;
+            }
+            
+            nav ul {
+                gap: 1rem;
+            }
+            
+            nav a {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        /* Floating elements */
+        .floating-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .shape {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .shape:nth-child(1) {
+            width: 80px;
+            height: 80px;
+            left: 10%;
+            top: 20%;
+            animation-delay: 0s;
+        }
+
+        .shape:nth-child(2) {
+            width: 60px;
+            height: 60px;
+            right: 10%;
+            top: 60%;
+            animation-delay: -2s;
+        }
+
+        .shape:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            left: 60%;
+            top: 10%;
+            animation-delay: -4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Editable sections */
+        .editable {
+            position: relative;
+            cursor: text;
+            transition: all 0.3s ease;
+        }
+
+        .editable:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 0.2rem;
+        }
+
+        .edit-hint {
+            position: absolute;
+            top: -25px;
+            right: 0;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .editable:hover .edit-hint {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating shapes -->
+    <div class="floating-shapes">
+        <div class="shape"></div>
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+
+    <!-- Navigation -->
+    <nav>
+        <ul>
+            <li><a href="#" onclick="showPage('home')">Home</a></li>
+            <li><a href="#" onclick="showPage('about')">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Home Page -->
+    <div id="home" class="page active">
+        <div class="profile-container">
+            <div class="profile-image" onclick="changeProfileImage()">
+                <span class="editable" contenteditable="false">YN</span>
+                <span class="edit-hint">Click to change</span>
+            </div>
+        </div>
+        
+        <div class="name-title">
+            <h1 class="name editable" contenteditable="true">Your Name</h1>
+            <p class="title editable" contenteditable="true">Full Stack Developer</p>
+        </div>
+        
+        <div class="social-links">
+            <a href="#" class="social-link" id="linkedin-link">
+                <svg class="social-icon" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+                <span class="editable" contenteditable="true">LinkedIn</span>
+            </a>
+            <a href="#" class="social-link" id="github-link">
+                <svg class="social-icon" viewBox="0 0 24 24">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+                <span class="editable" contenteditable="true">GitHub</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- About Page -->
+    <div id="about" class="page">
+        <div class="about-container">
+            <div class="about-header">
+                <h2 class="about-title">About Me</h2>
+            </div>
+            
+            <div class="about-content editable" contenteditable="true">
+                <p>Welcome to my portfolio! I'm a passionate developer who loves creating amazing web experiences. With expertise in modern technologies and a keen eye for design, I bring ideas to life through code.</p>
+                
+                <p>I specialize in full-stack development, working with cutting-edge technologies to build scalable and user-friendly applications. My journey in tech started with curiosity and has evolved into a deep passion for solving complex problems through elegant solutions.</p>
+            </div>
+
+            <div class="skills-section">
+                <h3 class="skills-title">Skills & Technologies</h3>
+                <div class="skills-grid">
+                    <div class="skill-item editable" contenteditable="true">JavaScript</div>
+                    <div class="skill-item editable" contenteditable="true">React</div>
+                    <div class="skill-item editable" contenteditable="true">Node.js</div>
+                    <div class="skill-item editable" contenteditable="true">Python</div>
+                    <div class="skill-item editable" contenteditable="true">HTML/CSS</div>
+                    <div class="skill-item editable" contenteditable="true">MongoDB</div>
+                    <div class="skill-item editable" contenteditable="true">Git</div>
+                    <div class="skill-item editable" contenteditable="true">AWS</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Page navigation
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageId).classList.add('active');
+            
+            // Add smooth transition effect
+            const activePage = document.getElementById(pageId);
+            activePage.style.animation = 'fadeInUp 0.6s ease';
+        }
+
+        // Profile image interaction
+        function changeProfileImage() {
+            const profileImg = document.querySelector('.profile-image span');
+            const newText = prompt('Enter your initials or a short text for your profile:');
+            if (newText && newText.length <= 3) {
+                profileImg.textContent = newText.toUpperCase();
+            }
+        }
+
+        // Social links functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // LinkedIn link handler
+            const linkedinLink = document.getElementById('linkedin-link');
+            linkedinLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = prompt('Enter your LinkedIn profile URL:');
+                if (url) {
+                    this.href = url;
+                    window.open(url, '_blank');
+                }
+            });
+
+            // GitHub link handler
+            const githubLink = document.getElementById('github-link');
+            githubLink.addEventListener('click', function(e) {
+                e.preventDefault();
+                const url = prompt('Enter your GitHub profile URL:');
+                if (url) {
+                    this.href = url;
+                    window.open(url, '_blank');
+                }
+            });
+
+            // Make all editable elements responsive to clicks
+            const editableElements = document.querySelectorAll('.editable');
+            editableElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    this.focus();
+                });
+
+                // Save changes on blur
+                element.addEventListener('blur', function() {
+                    // You can add auto-save functionality here if needed
+                    console.log('Content updated:', this.textContent);
+                });
+            });
+        });
+
+        // Smooth scrolling for navigation
+        document.querySelectorAll('nav a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('onclick').match(/'(.+)'/)[1];
+                showPage(targetId);
+            });
+        });
+
+        // Add some interactive particles on mouse move
+        document.addEventListener('mousemove', function(e) {
+            if (Math.random() > 0.98) {
+                const particle = document.createElement('div');
+                particle.style.position = 'fixed';
+                particle.style.left = e.clientX + 'px';
+                particle.style.top = e.clientY + 'px';
+                particle.style.width = '4px';
+                particle.style.height = '4px';
+                particle.style.background = 'rgba(255,255,255,0.6)';
+                particle.style.borderRadius = '50%';
+                particle.style.pointerEvents = 'none';
+                particle.style.zIndex = '999';
+                particle.style.animation = 'fadeOut 2s ease-out forwards';
+                document.body.appendChild(particle);
+
+                setTimeout(() => {
+                    if (particle.parentNode) {
+                        particle.parentNode.removeChild(particle);
+                    }
+                }, 2000);
+            }
+        });
+
+        // Add fadeOut animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeOut {
+                0% { opacity: 1; transform: scale(1); }
+                100% { opacity: 0; transform: scale(0) translateY(-50px); }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
